@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CobraFácil — Gestão de Cobranças</title>
+<style>
+:root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--dark:#0f172a;--blue:#2563eb;--green:#059669;--amber:#d97706;--red:#dc2626}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button{font:inherit;cursor:pointer}.app{min-height:100vh;display:flex}.sidebar{width:250px;background:#fff;border-right:1px solid var(--line);padding:22px 16px;position:fixed;inset:0 auto 0 0}.brand{font-size:21px;font-weight:800;padding:8px 10px 25px}.brand span{color:var(--blue)}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:10px;color:#475569;font-weight:600}.nav button:hover,.nav button.active{background:#f1f5f9;color:var(--dark)}.side-bottom{position:absolute;left:16px;right:16px;bottom:20px;border-top:1px solid var(--line);padding-top:16px}.user{display:flex;gap:10px;align-items:center}.avatar{width:36px;height:36px;border-radius:50%;background:#dbeafe;color:#1d4ed8;display:grid;place-items:center;font-weight:800}.user small{display:block;color:var(--muted)}
+.main{margin-left:250px;width:calc(100% - 250px);padding:32px;max-width:1400px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:26px}.eyebrow{font-size:13px;color:var(--muted);margin:0 0 5px}.title{font-size:30px;margin:0}.btn{border:0;background:var(--dark);color:#fff;border-radius:9px;padding:11px 15px;font-weight:700}.btn:hover{background:#334155}.btn.secondary{background:#fff;color:var(--dark);border:1px solid var(--line)}.grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 1px 2px #00000008}.stat{display:flex;justify-content:space-between;align-items:center}.stat p{margin:0;color:var(--muted);font-size:14px;font-weight:600}.stat strong{display:block;font-size:30px;margin-top:6px}.icon{width:44px;height:44px;border-radius:12px;background:#f1f5f9;display:grid;place-items:center;font-size:20px}.green{color:var(--green)}.amber{color:var(--amber)}.red{color:var(--red)}.section{margin-top:18px}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.section h2{font-size:18px;margin:0}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table th{text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding:12px;border-bottom:1px solid var(--line)}.table td{padding:14px 12px;border-bottom:1px solid #f1f5f9;font-size:14px}.badge{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800}.paid{background:#d1fae5;color:#047857}.pending{background:#fef3c7;color:#b45309}.late{background:#fee2e2;color:#b91c1c}.layout{grid-template-columns:1.6fr 1fr}.activity{display:grid;gap:15px}.activity-item{display:flex;gap:12px}.dot{width:9px;height:9px;border-radius:50%;background:#94a3b8;margin-top:6px;flex:none}.activity-item p{margin:0;font-size:14px}.activity-item small{color:var(--muted)}.view{display:none}.view.active{display:block}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}.search{flex:1;min-width:220px;padding:11px 13px;border:1px solid var(--line);border-radius:9px;outline:none}.search:focus{border-color:#94a3b8}.empty{color:var(--muted);text-align:center;padding:30px}.toast{position:fixed;right:24px;bottom:24px;background:var(--dark);color:#fff;padding:13px 17px;border-radius:10px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:none}
+@media(max-width:900px){.sidebar{width:76px;padding:18px 10px}.brand{font-size:0;text-align:center}.brand span{font-size:22px}.nav button{font-size:0;text-align:center}.nav button:first-letter{font-size:18px}.side-bottom{display:none}.main{margin-left:76px;width:calc(100% - 76px);padding:22px}.stats{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}}
+@media(max-width:560px){.main{padding:15px}.stats{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.title{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">Cobra<span>Fácil</span></div>
+  <nav class="nav">
+    <button class="active" data-view="dashboard">▦ &nbsp; Dashboard</button>
+    <button data-view="cobrancas">€ &nbsp; Cobranças</button>
+    <button data-view="clientes">♙ &nbsp; Clientes</button>
+    <button data-view="reclamacoes">⚑ &nbsp; Reclamações</button>
+  </nav>
+  <div class="side-bottom">
+    <div class="user"><div class="avatar">CF</div><div><strong>Empresa Demo</strong><small>empresa@demo.pt</small></div></div>
+  </div>
+</aside>
+
+<main class="main">
+  <section id="dashboard" class="view active">
+    <div class="top">
+      <div><p class="eyebrow">Área da empresa</p><h1 class="title">Dashboard</h1><p class="eyebrow">Acompanhamento das cobranças e clientes.</p></div>
+      <button class="btn" onclick="showView('cobrancas')">Gerir cobranças →</button>
+    </div>
+    <div class="grid stats">
+      <div class="card stat"><div><p>Total</p><strong>24</strong></div><div class="icon">€</div></div>
+      <div class="card stat"><div><p>Pagas</p><strong class="green">14</strong></div><div class="icon">✓</div></div>
+      <div class="card stat"><div><p>Pendentes</p><strong class="amber">7</strong></div><div class="icon">◷</div></div>
+      <div class="card stat"><div><p>Em atraso</p><strong class="red">3</strong></div><div class="icon">!</div></div>
+    </div>
+    <div class="grid layout section">
+      <div class="card">
+        <div class="section-head"><h2>Cobranças recentes</h2><button class="btn secondary" onclick="showView('cobrancas')">Ver todas</button></div>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Cliente</th><th>Descrição</th><th>Valor</th><th>Prazo</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>João Silva</strong></td><td>Fatura #2026-018</td><td>450,00 €</td><td>25/09/2026</td><td><span class="badge pending">Pendente</span></td></tr>
+          <tr><td><strong>Maria Costa</strong></td><td>Serviço mensal</td><td>180,00 €</td><td>22/09/2026</td><td><span class="badge late">Em atraso</span></td></tr>
+          <tr><td><strong>TechLuso, Lda.</strong></td><td>Fatura #2026-016</td><td>920,00 €</td><td>20/09/2026</td><td><span class="badge paid">Paga</span></td></tr>
+          <tr><td><strong>Ana Rodrigues</strong></td><td>Consultoria</td><td>320,00 €</td><td>28/09/2026</td><td><span class="badge pending">Pendente</span></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="card"><div class="section-head"><h2>Atividade recente</h2></div>
+        <div class="activity">
+          <div class="activity-item"><span class="dot"></span><div><p>Pagamento recebido de <strong>TechLuso, Lda.</strong></p><small>Hoje, 09:42</small></div></div>
+          <div class="activity-item"><span class="dot"></span><div><p>Aviso de vencimento enviado a <strong>João Silva</strong></p><small>Hoje, 08:00</small></div></div>
+          <div class="activity-item"><span class="dot"></span><div><p>Nova reclamação de <strong>Maria Costa</strong></p><small>Ontem, 16:18</small></div></div>
+          <div class="activity-item"><span class="dot"></span><div><p>Nova cobrança criada para <strong>Ana Rodrigues</strong></p><small>Ontem, 11:07</small></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cobrancas" class="view">
+    <div class="top"><div><p class="eyebrow">Gestão</p><h1 class="title">Cobranças</h1></div><button class="btn" onclick="newCharge()">+ Nova cobrança</button></div>
+    <div class="card"><div class="toolbar"><input id="chargeSearch" class="search" placeholder="Pesquisar por cliente ou descrição..." oninput="filterRows('chargeSearch','chargesTable')"><button class="btn secondary" onclick="toast('Filtros aplicados')">Filtrar</button></div>
+      <div class="table-wrap"><table class="table" id="chargesTable"><thead><tr><th>Cliente</th><th>Descrição</th><th>Valor</th><th>Prazo</th><th>Estado</th><th>Ação</th></tr></thead><tbody>
+      <tr><td>João Silva</td><td>Fatura #2026-018</td><td>450,00 €</td><td>25/09/2026</td><td><span class="badge pending">Pendente</span></td><td><button class="btn secondary" onclick="toast('Cobrança selecionada')">Abrir</button></td></tr>
+      <tr><td>Maria Costa</td><td>Serviço mensal</td><td>180,00 €</td><td>22/09/2026</td><td><span class="badge late">Em atraso</span></td><td><button class="btn secondary" onclick="toast('Cobrança selecionada')">Abrir</button></td></tr>
+      <tr><td>TechLuso, Lda.</td><td>Fatura #2026-016</td><td>920,00 €</td><td>20/09/2026</td><td><span class="badge paid">Paga</span></td><td><button class="btn secondary" onclick="toast('Cobrança selecionada')">Abrir</button></td></tr>
+      <tr><td>Ana Rodrigues</td><td>Consultoria</td><td>320,00 €</td><td>28/09/2026</td><td><span class="badge pending">Pendente</span></td><td><button class="btn secondary" onclick="toast('Cobrança selecionada')">Abrir</button></td></tr>
+      </tbody></table></div>
+    </div>
+  </section>
+
+  <section id="clientes" class="view">
+    <div class="top"><div><p class="eyebrow">Base de dados</p><h1 class="title">Clientes</h1></div><button class="btn" onclick="newClient()">+ Novo cliente</button></div>
+    <div class="card"><div class="toolbar"><input id="clientSearch" class="search" placeholder="Pesquisar cliente..." oninput="filterRows('clientSearch','clientsTable')"></div>
+    <div class="table-wrap"><table class="table" id="clientsTable"><thead><tr><th>Cliente</th><th>Email</th><th>País</th><th>Moeda</th><th>Estado</th></tr></thead><tbody>
+      <tr><td><strong>João Silva</strong></td><td>joao@demo.pt</td><td>Portugal</td><td>EUR</td><td><span class="badge paid">Ativo</span></td></tr>
+      <tr><td><strong>Maria Costa</strong></td><td>maria@demo.pt</td><td>Portugal</td><td>EUR</td><td><span class="badge paid">Ativo</span></td></tr>
+      <tr><td><strong>TechLuso, Lda.</strong></td><td>geral@techluso.pt</td><td>Portugal</td><td>EUR</td><td><span class="badge paid">Ativo</span></td></tr>
+      <tr><td><strong>Rafael Oliveira</strong></td><td>rafael@demo.br</td><td>Brasil</td><td>BRL</td><td><span class="badge paid">Ativo</span></td></tr>
+    </tbody></table></div></div>
+  </section>
+
+  <section id="reclamacoes" class="view">
+    <div class="top"><div><p class="eyebrow">Suporte</p><h1 class="title">Reclamações</h1></div></div>
+    <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Cliente</th><th>Assunto</th><th>Data</th><th>Estado</th><th>Ação</th></tr></thead><tbody>
+      <tr><td>Maria Costa</td><td>Valor incorreto na cobrança</td><td>23/09/2026</td><td><span class="badge pending">Em análise</span></td><td><button class="btn secondary" onclick="toast('Reclamação aberta')">Responder</button></td></tr>
+      <tr><td>João Silva</td><td>Pedido de esclarecimento</td><td>19/09/2026</td><td><span class="badge paid">Resolvida</span></td><td><button class="btn secondary" onclick="toast('Reclamação aberta')">Ver</button></td></tr>
+    </tbody></table></div></div>
+  </section>
+</main>
+</div>
+<div id="toast" class="toast"></div>
+<script>
+const buttons=document.querySelectorAll('.nav button');
+buttons.forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');buttons.forEach(b=>b.classList.toggle('active',b.dataset.view===id));window.scrollTo({top:0,behavior:'smooth'});}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
+function filterRows(inputId,tableId){const q=document.getElementById(inputId).value.toLowerCase();document.querySelectorAll('#'+tableId+' tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none');}
+function newCharge(){toast('Formulário de nova cobrança — demonstração');}
+function newClient(){toast('Formulário de novo cliente — demonstração');}
+</script>
+</body>
+</html>
